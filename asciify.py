@@ -1,16 +1,17 @@
 
+import argparse
 from PIL import Image
 from math import floor
 from os.path import splitext 
-import sys
 
-if len(sys.argv) < 3:
-    print('expected filename and width')
-    exit()
+parser = argparse.ArgumentParser(description='convert an image to ascii art')
+parser.add_argument('source', help='path to the source image')
+parser.add_argument('width', type=int, help='output width in characters')
 
-filename = sys.argv[1]
+args = parser.parse_args()
+source_filename = args.source
 
-im = Image.open(filename)
+im = Image.open(source_filename)
 original_width, original_height = im.size
 
 if im.mode == 'RGBA': 
@@ -28,7 +29,7 @@ if im.mode == 'RGBA':
 char_aspect = 2
 
 # scale down to desired size (1 pixel per char)
-width = int(sys.argv[2])
+width = args.width
 height = int(width * original_height / original_width / char_aspect)
 downscaled = im.resize((width, height))
 
@@ -57,7 +58,7 @@ for y in range(height):
         char_row.append(char)
     rows.append(''.join(char_row) + '\n')
 
-basefilename, _ = splitext(filename)
+basefilename, _ = splitext(source_filename)
 outfilename = basefilename + '.txt'
 
 with open(outfilename, 'wb') as f:
