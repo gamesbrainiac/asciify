@@ -2,19 +2,35 @@
 import argparse
 from PIL import Image
 from math import floor
-from os.path import splitext 
+import os
 
 parser = argparse.ArgumentParser(description='convert an image to ascii art')
-parser.add_argument('source', help='path to the source image')
-parser.add_argument('width', type=int, help='output width in characters')
-parser.add_argument('-i', '--invert', action='store_true', help=(
-    'invert colors to look right for black text on a white background. '
-    'by default looks correct for white text on a black background'))
+parser.add_argument('source', 
+    help='path to the source image')
+parser.add_argument('width', 
+    type=int, 
+    help='output width in characters')
+parser.add_argument('-i', '--invert', 
+    action='store_true', 
+    help=(
+        'invert colors to look right for black text on a white background. '
+        'by default looks correct for white text on a black background'))
+
+parser.add_argument('-s', '--save', 
+    dest='output_path', 
+    metavar='PATH', 
+    nargs='?',
+    action='store',
+    const='',
+    default=None,
+    help=(
+        'write the result to a file, rather than stdout. '
+        'if no path is specified, `source` is used, but with the `.txt` extension'))
 
 args = parser.parse_args()
-source_filename = args.source
+source_path = args.source
 
-im = Image.open(source_filename)
+im = Image.open(source_path)
 original_width, original_height = im.size
 
 if im.mode == 'RGBA': 
@@ -62,10 +78,19 @@ for y in range(height):
         
         char = levels[i]
         char_row.append(char)
-    rows.append(''.join(char_row) + '\n')
+    rows.append(''.join(char_row))
 
-basefilename, _ = splitext(source_filename)
-outfilename = basefilename + '.txt'
+if args.output_path is None:
+    for row in rows:
+        print(row)
 
-with open(outfilename, 'wb') as f:
-    f.writelines((row.encode('utf-8') for row in rows))
+else:
+    output_path = args.output_path
+    if output_path == '':
+        base_path, _ = os.path.splitext(source_path)
+        output_path = base_path + '.txt'
+    
+    with open(output_path, 'wb') as f:
+        f.writelines((row + os.linesep).encode('utf-8') for row in rows)
+    
+    print(f'saved to {output_path}')
