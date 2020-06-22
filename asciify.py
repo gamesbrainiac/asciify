@@ -9,7 +9,7 @@ parser.add_argument('source', help='path to the source image')
 parser.add_argument('width', type=int, help='output width in characters')
 parser.add_argument('-i', '--invert', action='store_true', help=(
     'invert colors to look right for black text on a white background. '
-    'By default looks correct for white text on a black background'))
+    'by default looks correct for white text on a black background'))
 
 args = parser.parse_args()
 source_filename = args.source
@@ -20,7 +20,7 @@ original_width, original_height = im.size
 if im.mode == 'RGBA': 
     # don't know what RGB values transparent pixels will have,
     # to control this, blend with an opaque single color background image
-    background_color = (255, 255, 255)
+    background_color = (255, 255, 255) if args.invert else (0, 0, 0)
     background_image = Image.new('RGBA', im.size, color=background_color + (255,))
     im = Image.alpha_composite(background_image, im)
     im.convert('RGB')
