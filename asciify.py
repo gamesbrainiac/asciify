@@ -7,6 +7,9 @@ from os.path import splitext
 parser = argparse.ArgumentParser(description='convert an image to ascii art')
 parser.add_argument('source', help='path to the source image')
 parser.add_argument('width', type=int, help='output width in characters')
+parser.add_argument('-i', '--invert', action='store_true', help=(
+    'invert colors to look right for black text on a white background. '
+    'By default looks correct for white text on a black background'))
 
 args = parser.parse_args()
 source_filename = args.source
@@ -45,6 +48,9 @@ pixels = list(greyscale.getdata())
 levels = ' +#'
 # levels = ' .,-:+*?$#'
 # levels = ' ░▒▓█'
+
+if args.invert:
+    levels = levels[::-1]
 
 rows = []
 for y in range(height):
