@@ -23,7 +23,7 @@ if im.mode == 'RGBA':
 
 
 # aspect ratio of a character when its displayed 
-# (they arent perfect squares like pixels)
+# (they aren't perfect squares like pixels)
 # height / width
 char_aspect = 2
 
@@ -38,7 +38,6 @@ greyscale = downscaled.convert('L')
 # tonemap so darkest char for min_lum
 #       and lightest char for max_lum
 min_lum, max_lum = greyscale.getextrema()
-# min_lum, max_lum = (0, 255)
 
 pixels = list(greyscale.getdata())
 
