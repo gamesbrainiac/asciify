@@ -93,12 +93,13 @@ for y in range(pixels_down):
                 
                 if i < len(pixels):
                     luminance = pixels[i]
-                    
-                    bit = round((luminance - min_lum) / (max_lum + 1 - min_lum))
-                    
+                    bit = round((luminance - min_lum) / (max_lum - min_lum))
                 else:
                     # off the edge - just output black
                     bit = 0
+
+                if args.invert:
+                    bit = 1 - bit
 
                 # 0 3
                 # 1 4
