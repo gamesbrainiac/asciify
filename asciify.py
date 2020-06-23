@@ -28,6 +28,8 @@ def to_chars(im, args):
 
     if args.shade:
         levels = ' ░▒▓█'
+    elif args.custom_levels is not None:
+        levels = args.custom_levels
     else:
         levels = ' +#'
 
@@ -130,13 +132,20 @@ if __name__ == '__main__':
             'by default looks correct for white text on a black background'))
 
     style = parser.add_mutually_exclusive_group()
-    # high & low depth ascii?
     style.add_argument('--ascii', action='store_true',
         help='style using basic ascii characters (the default)')
     style.add_argument('--shade', action='store_true',
         help='style using shaded block characters')
     style.add_argument('--dots', action='store_true',
         help='style using braille characters for higher resolution')
+    style.add_argument('--custom', 
+        dest='custom_levels',
+        metavar='LEVELS',
+        action='store',
+        default=None,
+        help=(
+            'specify your own sequence of characters to be used, '
+            'from most empty to most filled. e.g " .~*#"'))
 
     parser.add_argument('-s', '--save', 
         dest='output_path', 
