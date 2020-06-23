@@ -102,8 +102,8 @@ def to_chars_superpixels(im, args):
                         luminance = pixels[i]
                         bit = round((luminance - min_lum) / (max_lum - min_lum))
                     else:
-                        # off the edge - just output black
-                        bit = 0
+                        # off the bottom - blank
+                        continue
 
                     if args.invert:
                         bit = 1 - bit
