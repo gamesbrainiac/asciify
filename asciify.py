@@ -88,7 +88,8 @@ def to_chars_superpixels(image, cmd_parameters):
     # 1 4
     # 2 5
     # 6 7
-    bit_index = lambda dx, dy: dx * 3 + dy if dy < 3 else dx + 6
+    def bit_index(dx, dy):
+        return dx * 3 + dy if dy < 3 else dx + 6
 
     char_rows = []
     for y in range(pixels_down):
