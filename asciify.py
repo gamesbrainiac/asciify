@@ -1,4 +1,6 @@
 import argparse
+from pathlib import Path
+
 from PIL import Image
 from math import floor, ceil
 import os
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     source_path = args.source
 
-    im = Image.open(source_path)
+    im = Image.open(Path(source_path))
     original_width, original_height = im.size
 
     if im.mode == 'RGBA':
